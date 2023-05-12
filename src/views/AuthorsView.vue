@@ -1,5 +1,17 @@
 <template>
-  <div class="authors">
-    <h1>This is Authors</h1>
-  </div>
+  <div class="authors">This is Authors: {{ store.authors }}</div>
 </template>
+
+<script lang="ts">
+// import { ref } from "vue";
+import { useStore } from "../store/index";
+
+export default {
+  setup() {
+    const store = useStore();
+    return {
+      store,
+    };
+  },
+};
+</script>
