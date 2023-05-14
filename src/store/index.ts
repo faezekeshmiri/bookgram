@@ -13,7 +13,7 @@ export const useStore = defineStore("bookgram", {
     return {
       authors: data
         ? JSON.parse(data)
-        : [{ fullName: "J.K.Roling", profilePicture: "profile" }],
+        : [],
     };
   },
   actions: {

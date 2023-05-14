@@ -1,4 +1,4 @@
 export interface Author {
   fullName: string;
-  profilePicture: string;
+  profilePicture: string | null;
 }
