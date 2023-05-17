@@ -9,14 +9,15 @@ const AUTHORS_KEY = "bookgram_authors";
 
 export const useStore = defineStore("bookgram", {
   state: (): State => {
-    const data = localStorage.getItem(AUTHORS_KEY);
     return {
-      authors: data
-        ? JSON.parse(data)
-        : [],
+      authors: JSON.parse(localStorage.getItem(AUTHORS_KEY) || '[]') as Author[]
     };
   },
   actions: {
+    loadAuthors() {
+      const authors = JSON.parse(localStorage.getItem(AUTHORS_KEY) || '[]') as Author[]
+      this.authors = authors
+    },
     addAuthor(author: Author) {
       this.authors.push(author);
       localStorage.setItem(AUTHORS_KEY, JSON.stringify(this.authors));
@@ -26,5 +27,4 @@ export const useStore = defineStore("bookgram", {
       localStorage.setItem(AUTHORS_KEY, JSON.stringify(this.authors));
     },
   },
-  getters: {},
 });
