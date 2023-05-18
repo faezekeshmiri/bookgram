@@ -15,7 +15,7 @@
 
         <v-card>
           <v-card-title>
-            <div class="text-center">Add New Author</div>
+            <div class="text-center">{{dialogTitle}}</div>
           </v-card-title>
           <v-container class="px-10">
             <v-form @submit.prevent="submitForm">
@@ -27,15 +27,15 @@
                 prepend-icon="mdi-vuetify"
               />
               <v-file-input
-              density="compact"
+                density="compact"
                 @change="onFileChange"
                 label="Profile Picture"
                 accept="image/*"
               />
               <v-card-actions class="justify-center">
-                <v-btn type="submit" color="success" variant="tonal"
-                  >Submit</v-btn
-                >
+                <v-btn type="submit" color="success" variant="tonal">
+                  Submit
+                </v-btn>
               </v-card-actions>
             </v-form>
           </v-container>
@@ -81,6 +81,7 @@
                   density="compact"
                   icon="mdi-pencil"
                   color="success"
+                  @click="openEditDialog(author)"
                 ></v-btn>
               </v-list-item>
             </td>
@@ -88,7 +89,7 @@
         </tbody>
         <template v-slot:bottom>
           <div class="text-center pt-2">
-            <v-pagination 
+            <v-pagination
               v-model="pageNumber"
               :length="pages"
               rounded="circle"
@@ -111,6 +112,7 @@ export default {
   setup() {
     const store = useStore();
     const dialog = ref(false);
+    const dialogTitle = ref('Add New Author');
     const author = reactive<Author>({
       id: "",
       fullName: "",
@@ -120,7 +122,9 @@ export default {
     const pageNumber = ref(1);
 
     const pages = computed(() => {
-      return store.authors.length % pageLength ? Math.floor(store.authors.length / pageLength) + 1 : Math.floor(store.authors.length / pageLength);
+      return store.authors.length % pageLength
+        ? Math.floor(store.authors.length / pageLength) + 1
+        : Math.floor(store.authors.length / pageLength);
     });
 
     const pageAuthors = computed(() => {
@@ -130,9 +134,25 @@ export default {
     });
 
     const submitForm = () => {
-      author.id = uuidv4();
-      console.log(author);
-      store.addAuthor(author);
+      if(dialogTitle.value === 'Add New Author'){
+        const newAuthor : Author = {
+          id : uuidv4(),
+          fullName : author.fullName,
+          profilePicture: author.profilePicture
+        };
+
+        store.addAuthor(newAuthor);
+      }
+      else{
+        const updatedAuthor : Author = {
+          id : author.id,
+          fullName : author.fullName,
+          profilePicture: author.profilePicture
+        };
+        store.updateAuthor(updatedAuthor);
+        dialogTitle.value = 'Add New Author'
+      }
+      
       author.id = "";
       author.fullName = "";
       author.profilePicture = null;
@@ -162,9 +182,18 @@ export default {
       store.removeAuthor(index);
     };
 
+    const openEditDialog = (selectedAuthor: Author) => {
+      dialog.value = true;
+      dialogTitle.value = 'Edit Author'
+      author.id = selectedAuthor.id;
+      author.fullName = selectedAuthor.fullName;
+      author.profilePicture = selectedAuthor.profilePicture;
+    }
+
     return {
       store,
       dialog,
+      dialogTitle,
       author,
       pageLength,
       pageNumber,
@@ -173,13 +202,12 @@ export default {
       submitForm,
       onFileChange,
       deleteAuthor,
+      openEditDialog
     };
   },
 };
 </script>
 
 <style>
-.v-card__title {
-  font-style: italic;
-}
+
 </style>

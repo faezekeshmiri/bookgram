@@ -26,5 +26,12 @@ export const useStore = defineStore("bookgram", {
       this.authors.splice(index, 1);
       localStorage.setItem(AUTHORS_KEY, JSON.stringify(this.authors));
     },
+    updateAuthor(updatedAuthor: Author) {
+      const index = this.authors.findIndex((author) => author.id === updatedAuthor.id);
+      if (index !== -1) {
+        this.authors[index] = updatedAuthor;
+        localStorage.setItem(AUTHORS_KEY, JSON.stringify(this.authors));
+      }
+    },
   },
 });
