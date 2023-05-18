@@ -11,7 +11,7 @@
       </v-col>
       <v-col cols="10" class="px-0 py-0">
         <div class="bg-green-lighten-5 py-5">
-          <v-tabs align-tabs="center text-success">
+          <v-tabs class="text-success" align-tabs="center">
             <v-tab to="/">Books</v-tab>
             <v-tab to="/authors">Authors</v-tab>
           </v-tabs>

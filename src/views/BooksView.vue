@@ -101,7 +101,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="book in pageBooks" :key="book.isbn">
+          <tr v-for="book in pageBooks" :key="book.isbn" @click="showBookDetails(book.id)">
             <td class="text-left">
               <v-avatar size="36px">
                 <v-img
@@ -159,6 +159,7 @@ import { computed, reactive, ref } from "vue";
 import { useStore } from "../store/index";
 import { Book } from "@/store/models/book";
 import { v4 as uuidv4 } from "uuid";
+import router from "@/router";
 
 export default {
   setup() {
@@ -269,6 +270,10 @@ export default {
       book.pageNumber = selectedBook.pageNumber;
     };
 
+    const showBookDetails = (id: string) => {
+      router.push(`/books/${id}`)
+    }
+
     return {
       store,
       dialog,
@@ -283,6 +288,7 @@ export default {
       onFileChange,
       deleteBook,
       openEditDialog,
+      showBookDetails
     };
   },
 };
