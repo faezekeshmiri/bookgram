@@ -1,36 +1,45 @@
 <template>
   <v-app>
-    <v-tabs class="" align-tabs="center">
-      <v-tab to="/">Books</v-tab>
-      <v-tab to="/authors">Authors</v-tab>
-    </v-tabs>
-    <v-row class="h-75">
-      <v-col>
-        
+    
+    <v-row class="h-100">
+      <v-col class="d-flex bg-green-lighten-5 py-15 justify-center align-center" cols="2">
+        <div class="text-success">
+          <div class="py-2" v-for="book in store.getLatestBooks" :key="book.id">
+            {{book.name}}
+          </div>
+        </div>
       </v-col>
-      <v-col>
-        <router-view></router-view>
+      <v-col cols="10" class="px-0 py-0">
+        <div class="bg-green-lighten-5 py-5">
+          <v-tabs align-tabs="center text-success">
+            <v-tab to="/">Books</v-tab>
+            <v-tab to="/authors">Authors</v-tab>
+          </v-tabs>
+        </div>
+        <div>
+          <router-view></router-view>
+        </div>
       </v-col>
     </v-row>
-    
-    <v-footer class="bg-green-lighten-4" style="padding: 0px !important;" >
-      <div class="px-4 py-2 text-success text-center w-100">
+    <v-footer class="bg-green-lighten-5" style="padding: 0px !important;" >
+      <div class="px-4 py-6 text-success text-center w-100">
         &copy; 2023 Bookgram
       </div>
     </v-footer>
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import { useStore } from "./store/index";
+export default{
+  setup(){
+    const store = useStore();
 
-  export default {
-    components: {
-    },
-    data () {
-      return {
-      }
-    },
+    return{
+      store
+    }
   }
+}
 </script>
 <style>
 </style>

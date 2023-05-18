@@ -53,4 +53,9 @@ export const useStore = defineStore("bookgram", {
       }
     },
   },
+  getters: {
+    getLatestBooks(state){
+      return state.books.slice(-5);
+    }
+  }
 });
