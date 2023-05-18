@@ -20,7 +20,7 @@
           :src="require('@/assets/images.jpeg')"
           class="align-end"
           gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-          height="250px"
+          height="300px"
           cover
         >
           <v-card-title class="text-white" v-text="book?.name"></v-card-title>
@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import router from "@/router";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useStore } from "../store/index";
 
 export default {
@@ -65,6 +65,17 @@ export default {
     };
 
     onMounted(fetchBookId);
+
+    watch(
+      () => router.currentRoute.value.params.id,
+      (newBookId) => {
+        if (Array.isArray(newBookId)) {
+          bookId.value = newBookId[0];
+        } else {
+          bookId.value = newBookId;
+        }
+      }
+    );
 
     return {
       book,
