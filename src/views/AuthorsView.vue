@@ -24,7 +24,7 @@
                 v-model="author.fullName"
                 label="Full Name"
                 required
-                prepend-icon="mdi-vuetify"
+                prepend-icon="mdi-account"
               />
               <v-file-input
                 density="compact"
