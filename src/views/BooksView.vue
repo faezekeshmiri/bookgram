@@ -1,6 +1,7 @@
 <template>
   <div class="px-10 py-10">
-    <v-row no-gutters class="flex flex-nowrap justify-end no-gutters">
+    <v-row no-gutters class="flex flex-nowrap justify-space-between no-gutters">
+      <div class="text-h4 text-success">Books:</div>
       <v-dialog v-model="dialog" class="w-25 px-10" min-width="300px">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -15,7 +16,7 @@
 
         <v-card>
           <v-card-title>
-            <div class="text-center">{{dialogTitle}}</div>
+            <div class="text-center">{{ dialogTitle }}</div>
           </v-card-title>
           <v-container class="px-10">
             <v-form @submit.prevent="submitForm">
@@ -26,15 +27,15 @@
                 required
                 prepend-icon="mdi-book-open-page-variant"
               />
-              
+
               <v-select
                 density="compact"
                 v-model="book.author"
                 :items="store.authors"
-                :rules="[v => !!v || 'Author is required']"
+                :rules="[(v) => !!v || 'Author is required']"
                 label="Author"
                 item-title="fullName"
-                return-object 
+                return-object
                 prepend-icon="mdi-account"
                 required
               ></v-select>
@@ -43,12 +44,12 @@
                 density="compact"
                 v-model="book.genre"
                 :items="genres"
-                :rules="[v => !!v || 'Genre is required']"
+                :rules="[(v) => !!v || 'Genre is required']"
                 label="Genre"
                 prepend-icon="mdi-book-multiple"
                 required
               ></v-select>
-              
+
               <v-file-input
                 density="compact"
                 @change="onFileChange"
@@ -71,7 +72,7 @@
                     density="compact"
                     v-model="book.pageNumber"
                     label="Page Number"
-                    required  
+                    required
                   />
                 </v-col>
               </v-row>
@@ -86,7 +87,7 @@
       </v-dialog>
     </v-row>
 
-    <v-row>
+    <v-row class="justify-center pt-15">
       <v-table fixed-header fixed-footer>
         <thead>
           <tr>
@@ -156,7 +157,6 @@
 <script lang="ts">
 import { computed, reactive, ref } from "vue";
 import { useStore } from "../store/index";
-//import { Author } from "@/store/models/author";
 import { Book } from "@/store/models/book";
 import { v4 as uuidv4 } from "uuid";
 
@@ -164,7 +164,7 @@ export default {
   setup() {
     const store = useStore();
     const dialog = ref(false);
-    const dialogTitle = ref('Add New Book');
+    const dialogTitle = ref("Add New Book");
     const book = reactive<Book>({
       id: "",
       name: "",
@@ -172,11 +172,20 @@ export default {
       isbn: 0,
       coverImage: null,
       genre: "",
-      pageNumber: 0
+      pageNumber: 0,
     });
     const pageLength = 5;
     const pageNumber = ref(1);
-    const genres = ['Fiction', 'Nonfiction', 'Mystery', 'Fantasy', 'Horror', 'Romance', 'Poetry', 'History'];
+    const genres = [
+      "Fiction",
+      "Nonfiction",
+      "Mystery",
+      "Fantasy",
+      "Horror",
+      "Romance",
+      "Poetry",
+      "History",
+    ];
 
     const pages = computed(() => {
       return store.books.length % pageLength
@@ -191,33 +200,32 @@ export default {
     });
 
     const submitForm = () => {
-      if(dialogTitle.value === 'Add New Book'){
-        const newBook : Book = {
-          id : uuidv4(),
-          name : book.name,
+      if (dialogTitle.value === "Add New Book") {
+        const newBook: Book = {
+          id: uuidv4(),
+          name: book.name,
           author: book.author,
           isbn: book.isbn,
           coverImage: book.coverImage,
           genre: book.genre,
-          pageNumber: book.pageNumber
+          pageNumber: book.pageNumber,
         };
 
         store.addBook(newBook);
-      }
-      else{
-        const updatedBook : Book = {
-          id : book.id,
-          name : book.name,
+      } else {
+        const updatedBook: Book = {
+          id: book.id,
+          name: book.name,
           author: book.author,
           isbn: book.isbn,
           coverImage: book.coverImage,
           genre: book.genre,
-          pageNumber: book.pageNumber
+          pageNumber: book.pageNumber,
         };
         store.updateBook(updatedBook);
-        dialogTitle.value = 'Add New Book'
+        dialogTitle.value = "Add New Book";
       }
-      
+
       book.id = "";
       book.name = "";
       book.author = null;
@@ -245,23 +253,21 @@ export default {
     };
 
     const deleteBook = (selectedBook: Book) => {
-      const index = store.books.findIndex(
-        (book) => book === selectedBook
-      );
+      const index = store.books.findIndex((book) => book === selectedBook);
       store.removeBook(index);
     };
 
-     const openEditDialog = (selectedBook: Book) => {
-       dialog.value = true;
-       dialogTitle.value = 'Edit Book'
-       book.id = selectedBook.id;
-       book.name = selectedBook.name;
-       book.author = selectedBook.author;
-       book.isbn = selectedBook.isbn;
-       book.coverImage = selectedBook.coverImage;
-       book.genre = selectedBook.genre;
-       book.pageNumber = selectedBook.pageNumber;
-     }
+    const openEditDialog = (selectedBook: Book) => {
+      dialog.value = true;
+      dialogTitle.value = "Edit Book";
+      book.id = selectedBook.id;
+      book.name = selectedBook.name;
+      book.author = selectedBook.author;
+      book.isbn = selectedBook.isbn;
+      book.coverImage = selectedBook.coverImage;
+      book.genre = selectedBook.genre;
+      book.pageNumber = selectedBook.pageNumber;
+    };
 
     return {
       store,
@@ -276,12 +282,10 @@ export default {
       submitForm,
       onFileChange,
       deleteBook,
-      openEditDialog
+      openEditDialog,
     };
   },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

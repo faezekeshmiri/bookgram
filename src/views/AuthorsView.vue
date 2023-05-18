@@ -1,6 +1,7 @@
 <template>
   <div class="px-10 py-10">
-    <v-row no-gutters class="flex flex-nowrap justify-end no-gutters">
+    <v-row no-gutters class="flex flex-nowrap justify-space-between no-gutters">
+      <div class="text-h4 text-success">Authors:</div>
       <v-dialog v-model="dialog" class="w-25 px-10" min-width="300px">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -15,7 +16,7 @@
 
         <v-card>
           <v-card-title>
-            <div class="text-center">{{dialogTitle}}</div>
+            <div class="text-center">{{ dialogTitle }}</div>
           </v-card-title>
           <v-container class="px-10">
             <v-form @submit.prevent="submitForm">
@@ -43,7 +44,7 @@
       </v-dialog>
     </v-row>
 
-    <v-row>
+    <v-row class="justify-center pt-15">
       <v-table fixed-header fixed-footer>
         <thead>
           <tr>
@@ -112,7 +113,7 @@ export default {
   setup() {
     const store = useStore();
     const dialog = ref(false);
-    const dialogTitle = ref('Add New Author');
+    const dialogTitle = ref("Add New Author");
     const author = reactive<Author>({
       id: "",
       fullName: "",
@@ -134,25 +135,24 @@ export default {
     });
 
     const submitForm = () => {
-      if(dialogTitle.value === 'Add New Author'){
-        const newAuthor : Author = {
-          id : uuidv4(),
-          fullName : author.fullName,
-          profilePicture: author.profilePicture
+      if (dialogTitle.value === "Add New Author") {
+        const newAuthor: Author = {
+          id: uuidv4(),
+          fullName: author.fullName,
+          profilePicture: author.profilePicture,
         };
 
         store.addAuthor(newAuthor);
-      }
-      else{
-        const updatedAuthor : Author = {
-          id : author.id,
-          fullName : author.fullName,
-          profilePicture: author.profilePicture
+      } else {
+        const updatedAuthor: Author = {
+          id: author.id,
+          fullName: author.fullName,
+          profilePicture: author.profilePicture,
         };
         store.updateAuthor(updatedAuthor);
-        dialogTitle.value = 'Add New Author'
+        dialogTitle.value = "Add New Author";
       }
-      
+
       author.id = "";
       author.fullName = "";
       author.profilePicture = null;
@@ -184,11 +184,11 @@ export default {
 
     const openEditDialog = (selectedAuthor: Author) => {
       dialog.value = true;
-      dialogTitle.value = 'Edit Author'
+      dialogTitle.value = "Edit Author";
       author.id = selectedAuthor.id;
       author.fullName = selectedAuthor.fullName;
       author.profilePicture = selectedAuthor.profilePicture;
-    }
+    };
 
     return {
       store,
@@ -202,12 +202,10 @@ export default {
       submitForm,
       onFileChange,
       deleteAuthor,
-      openEditDialog
+      openEditDialog,
     };
   },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>
