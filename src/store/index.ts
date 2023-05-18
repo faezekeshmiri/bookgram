@@ -13,14 +13,18 @@ const BOOKS_KEY = "books";
 export const useStore = defineStore("bookgram", {
   state: (): State => {
     return {
-      authors: JSON.parse(localStorage.getItem(AUTHORS_KEY) || '[]') as Author[],
-      books: JSON.parse(localStorage.getItem(BOOKS_KEY) || '[]') as Book[]
+      authors: JSON.parse(
+        localStorage.getItem(AUTHORS_KEY) || "[]"
+      ) as Author[],
+      books: JSON.parse(localStorage.getItem(BOOKS_KEY) || "[]") as Book[],
     };
   },
   actions: {
     loadAuthors() {
-      const authors = JSON.parse(localStorage.getItem(AUTHORS_KEY) || '[]') as Author[]
-      this.authors = authors
+      const authors = JSON.parse(
+        localStorage.getItem(AUTHORS_KEY) || "[]"
+      ) as Author[];
+      this.authors = authors;
     },
     addAuthor(author: Author) {
       this.authors.push(author);
@@ -31,7 +35,9 @@ export const useStore = defineStore("bookgram", {
       localStorage.setItem(AUTHORS_KEY, JSON.stringify(this.authors));
     },
     updateAuthor(updatedAuthor: Author) {
-      const index = this.authors.findIndex((author) => author.id === updatedAuthor.id);
+      const index = this.authors.findIndex(
+        (author) => author.id === updatedAuthor.id
+      );
       if (index !== -1) {
         this.authors[index] = updatedAuthor;
         localStorage.setItem(AUTHORS_KEY, JSON.stringify(this.authors));
@@ -54,11 +60,18 @@ export const useStore = defineStore("bookgram", {
     },
   },
   getters: {
-    getLatestBooks(state){
+    getLatestBooks(state) {
       return state.books.slice(-5);
     },
     getBookById(state) {
-      return (bookId: string) => this.books.find((book) => book.id === bookId)
+      return (bookId: string) => state.books.find((book) => book.id === bookId);
     },
-  }
+    getAuthorById(state) {
+      return (authorId: String) =>
+        state.authors.find((author) => author.id === authorId);
+    },
+    getAuthorBooks: (state) => (authorId: string) => {
+      return state.books.filter((book) => book.author?.id === authorId);
+    },
+  },
 });

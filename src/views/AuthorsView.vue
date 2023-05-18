@@ -54,7 +54,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="author in pageAuthors" :key="author.fullName">
+          <tr v-for="author in pageAuthors" :key="author.fullName" @click="showAuthorDetails(author.id)">
             <td class="text-left">
               <v-avatar size="36px">
                 <v-img
@@ -108,6 +108,7 @@ import { computed, reactive, ref } from "vue";
 import { useStore } from "../store/index";
 import { Author } from "@/store/models/author";
 import { v4 as uuidv4 } from "uuid";
+import router from "@/router";
 
 export default {
   setup() {
@@ -190,6 +191,10 @@ export default {
       author.profilePicture = selectedAuthor.profilePicture;
     };
 
+    const showAuthorDetails = (id: String) => {
+      router.push(`/authors/${id}`)
+    }
+
     return {
       store,
       dialog,
@@ -203,6 +208,7 @@ export default {
       onFileChange,
       deleteAuthor,
       openEditDialog,
+      showAuthorDetails
     };
   },
 };
