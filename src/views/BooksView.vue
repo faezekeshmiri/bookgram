@@ -54,6 +54,7 @@
                 density="compact"
                 @change="onFileChange"
                 label="Cover Image"
+                :rules="fileRules"
                 accept="image/*"
               />
               <v-row>
@@ -101,8 +102,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="book in pageBooks" :key="book.isbn" @click="showBookDetails(book.id)">
-            <td class="text-left">
+          <tr v-for="book in pageBooks" :key="book.isbn">
+            <td class="text-left" @click="showBookDetails(book.id)">
               <v-avatar size="36px">
                 <v-img
                   v-if="book.coverImage"
@@ -175,6 +176,11 @@ export default {
       genre: "",
       pageNumber: 0,
     });
+    const fileRules = [
+        (value: any) => {
+          return !value || !value.length || value[0].size < 100000 || 'Image size should be less than 100 KB!'
+        },
+      ];
     const pageLength = 5;
     const pageNumber = ref(1);
     const genres = [
@@ -249,6 +255,7 @@ export default {
     const onFileChange = (event: Event) => {
       const input = event.target as HTMLInputElement;
       if (input.files && input.files.length) {
+        
         encodeImageFileAsURL(input.files[0]);
       }
     };
@@ -274,6 +281,8 @@ export default {
       router.push(`/books/${id}`)
     }
 
+    
+
     return {
       store,
       dialog,
@@ -284,11 +293,13 @@ export default {
       pageNumber,
       pages,
       pageBooks,
+      fileRules,
       submitForm,
       onFileChange,
       deleteBook,
       openEditDialog,
-      showBookDetails
+      showBookDetails,
+      
     };
   },
 };

@@ -31,6 +31,7 @@
                 density="compact"
                 @change="onFileChange"
                 label="Profile Picture"
+                :rules="fileRules"
                 accept="image/*"
               />
               <v-card-actions class="justify-center">
@@ -54,7 +55,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="author in pageAuthors" :key="author.fullName" @click="showAuthorDetails(author.id)">
+          <tr
+            v-for="author in pageAuthors"
+            :key="author.fullName"
+            @click="showAuthorDetails(author.id)"
+          >
             <td class="text-left">
               <v-avatar size="36px">
                 <v-img
@@ -120,6 +125,16 @@ export default {
       fullName: "",
       profilePicture: null,
     });
+    const fileRules = [
+      (value: any) => {
+        return (
+          !value ||
+          !value.length ||
+          value[0].size < 100000 ||
+          "Image size should be less than 100 KB!"
+        );
+      },
+    ];
     const pageLength = 5;
     const pageNumber = ref(1);
 
@@ -192,8 +207,8 @@ export default {
     };
 
     const showAuthorDetails = (id: String) => {
-      router.push(`/authors/${id}`)
-    }
+      router.push(`/authors/${id}`);
+    };
 
     return {
       store,
@@ -204,11 +219,12 @@ export default {
       pageNumber,
       pages,
       pageAuthors,
+      fileRules,
       submitForm,
       onFileChange,
       deleteAuthor,
       openEditDialog,
-      showAuthorDetails
+      showAuthorDetails,
     };
   },
 };
